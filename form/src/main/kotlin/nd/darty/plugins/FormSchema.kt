@@ -14,7 +14,7 @@ class FormService(private val connection: Connection) {
             "CREATE TABLE FORMS (ID SERIAL PRIMARY KEY, NAME VARCHAR(255), DATE VARCHAR(255), OPTIONS VARCHAR(4095));"
         private const val SELECT_FORM_BY_ID = "SELECT name, date, options FROM forms WHERE id = ?"
         private const val INSERT_FORM = "INSERT INTO forms (name, date, options) VALUES (?, ?, ?)"
-        private const val UPDATE_FORM = "UPDATE cities SET name = ? WHERE id = ?"
+        private const val UPDATE_FORM = "UPDATE forms SET name = ? WHERE id = ?"
         private const val DELETE_FORM = "DELETE FROM forms WHERE id = ?"
 
     }

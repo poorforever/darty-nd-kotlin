@@ -1,4 +1,4 @@
-package nd.darty.plugins
+package nd.darty.database
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -7,47 +7,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.*
 import java.sql.*
-
-fun Application.configureDatabases() {
-    val dbConnection: Connection = connectToPostgres(embedded = true)
-    val formService = FormService(dbConnection)
-
-    routing {
-
-        // Create city
-        post("/forms") {
-            val form = call.receive<Form>()
-            val id = formService.create(form)
-            call.respond(HttpStatusCode.Created, id)
-        }
-
-        // Read city
-        get("/forms/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            try {
-                val form = formService.read(id)
-                call.respond(HttpStatusCode.OK, form)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.NotFound)
-            }
-        }
-
-        // Update city
-        put("/forms/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            val form = call.receive<Form>()
-            formService.update(id, form)
-            call.respond(HttpStatusCode.OK)
-        }
-
-        // Delete city
-        delete("/forms/{id}") {
-            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            formService.delete(id)
-            call.respond(HttpStatusCode.OK)
-        }
-    }
-}
 
 /**
  * Makes a connection to a Postgres database.
